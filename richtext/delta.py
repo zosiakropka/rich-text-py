@@ -19,8 +19,17 @@ class Delta(object):
             unicode_ops.append(op)
         self.ops = unicode_ops
 
-    def insert(self, text, attributes):
-	raise NotImplementedError()
+    def insert(self, text, attributes=None):
+        newOp = {}
+        if iz.string(text):
+            if not len(text):
+                return self
+            newOp['insert'] = unicode(text)
+        elif iz.number(text):
+            newOp['insert'] = text
+        if iz.dictionary(attributes) and len(attributes):
+            newOp.attributes = attributes
+        return self.push(newOp)
 
     def delete(self, length):
 	raise NotImplementedError()
