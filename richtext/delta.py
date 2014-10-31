@@ -12,7 +12,7 @@ class Delta(object):
             self.ops = []
         unicode_ops = []
         for op in self.ops:
-            if op.get('insert'):
+            if op.get('insert') and iz.string(op['insert']):
                 op['insert'] = unicode(op['insert'])
             unicode_ops.append(op)
         self.ops = unicode_ops
