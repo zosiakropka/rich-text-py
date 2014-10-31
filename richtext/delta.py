@@ -1,3 +1,6 @@
+import iz
+import op
+from iterator import Iterator
 INFINITY = float('inf')
 
 class Delta(object):
