@@ -28,7 +28,7 @@ class Delta(object):
         elif iz.number(text):
             newOp['insert'] = text
         if iz.dictionary(attributes) and len(attributes):
-            newOp.attributes = attributes
+            newOp['attributes'] = attributes
         return self.push(newOp)
 
     def delete(self, length):
