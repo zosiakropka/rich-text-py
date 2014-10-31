@@ -32,7 +32,9 @@ class Delta(object):
         return self.push(newOp)
 
     def delete(self, length):
-	raise NotImplementedError()
+        if length <= 0:
+            return self
+        return self.push({'delete': length})
 
     def retain(self, length, attributes=False):
 	raise NotImplementedError()
