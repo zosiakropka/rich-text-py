@@ -91,7 +91,18 @@ class Delta(object):
         return self
 
     def slice(self, start=0, end=INFINITY):
-	raise NotImplementedError()
+        delta = Delta()
+        iterator = Iterator(self.ops)
+        index = 0
+        while index < end and iterator.hasNext():
+            nextOp = None
+            if index < start:
+                nextOp = iterator.next(start - index)
+            else:
+                nextOp = iterator.next(end - start)
+                delta.push(nextOp)
+            index += op.length(nextOp)
+        return delta
 
     def compose(self, other):
         other = Delta(other)
