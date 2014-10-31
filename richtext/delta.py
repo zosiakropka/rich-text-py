@@ -73,7 +73,39 @@ class Delta(object):
 	raise NotImplementedError()
 
     def compose(self, other):
-	raise NotImplementedError()
+        other = Delta(other)
+        selfIter = op.Iterator(self.ops)
+        otherIter = op.Iterator(other.ops)
+        self.ops = []
+        while selfIter.hasNext() or otherIter.hasNext():
+            if otherIter.peekType() == 'insert':
+                self.push(otherIter.next())
+            elif selfIter.peekType() == 'delete':
+                self.push(selfIter.next())
+            else:
+                length = min(selfIter.peekLength(), otherIter.peekLength())
+                selfOp = selfIter.next(length)
+                otherOp = otherIter.next(length)
+                if iz.number(otherOp.get('retain')):
+                    newOp = {}
+                    if iz.number(selfOp.get('retain')):
+                        newOp['retain'] = length
+                    else:
+                        newOp['insert'] = selfOp.get('insert')
+                    # Preserve null when composing with a retain, otherwise remove it for inserts
+                    attributes = op.attributes.compose(
+                                                       selfOp.get('attributes'),
+                                                       otherOp.get('attributes'),
+                                                       iz.number(selfOp.get('retain'))
+                                                       )
+                    if attributes:
+                        newOp['attributes'] = attributes
+                    self.push(newOp)
+                # Other op should be delete, we could be an insert or retain
+                # Insert + delete cancels out
+                elif iz.number(otherOp.get('delete')) and iz.number(selfOp.get('retain')):
+                    self.push(otherOp)
+        return self.chop()
 
     def diff(self, other):
 	raise NotImplementedError()
