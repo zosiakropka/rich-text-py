@@ -69,7 +69,10 @@ class Delta(object):
         return self
 
     def length(self):
-	raise NotImplementedError()
+        length = 0
+        for elem in self.ops:
+            length += op.length(elem)
+        return length
 
     def chop(self):
         try:
