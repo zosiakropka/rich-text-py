@@ -61,7 +61,13 @@ class Delta(object):
 	raise NotImplementedError()
 
     def chop(self):
-	raise NotImplementedError()
+        try:
+            lastOp = self.ops[-1]
+            if lastOp['retain'] and not lastOp.get('attributes'):
+                self.ops.pop()
+        except:
+            pass
+        return self
 
     def slice(self, start=0, end=INFINITY):
 	raise NotImplementedError()
