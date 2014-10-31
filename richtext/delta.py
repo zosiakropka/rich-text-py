@@ -37,7 +37,12 @@ class Delta(object):
         return self.push({'delete': length})
 
     def retain(self, length, attributes=False):
-	raise NotImplementedError()
+        if length <= 0:
+            return self
+        newOp = {'retain': length}
+        if iz.dictionary(attributes) and len(attributes):
+            newOp['attributes'] = attributes
+        return self.push(newOp)
 
     def push(self, newOp):
         index = len(self.ops)
