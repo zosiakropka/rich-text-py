@@ -109,8 +109,8 @@ class Delta(object):
 
     def compose(self, other):
         other = Delta(other)
-        selfIter = op.Iterator(self.ops)
-        otherIter = op.Iterator(other.ops)
+        selfIter = Iterator(self.ops)
+        otherIter = Iterator(other.ops)
         self.ops = []
         while selfIter.hasNext() or otherIter.hasNext():
             if otherIter.peekType() == 'insert':
