@@ -3,7 +3,19 @@ INFINITY = float('inf')
 class Delta(object):
 
     def __init__(self, ops=[]):
-	raise NotImplementedError()
+        # Assume we are given a well formed ops
+        if iz.array(ops):
+            self.ops = ops
+        elif iz.dictionary(ops) and iz.array(ops['ops']):
+            self.ops = ops['ops']
+        else:
+            self.ops = []
+        unicode_ops = []
+        for op in self.ops:
+            if op.get('insert'):
+                op['insert'] = unicode(op['insert'])
+            unicode_ops.append(op)
+        self.ops = unicode_ops
 
     def insert(self, text, attributes):
 	raise NotImplementedError()
