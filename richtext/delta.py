@@ -4,7 +4,9 @@ class Delta(object):
 
     def __init__(self, ops=[]):
         # Assume we are given a well formed ops
-        if iz.array(ops):
+        if isinstance(ops, Delta):
+            self.ops = ops.ops
+        elif iz.array(ops):
             self.ops = ops
         elif iz.dictionary(ops) and iz.array(ops['ops']):
             self.ops = ops['ops']
