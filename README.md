@@ -6,5 +6,5 @@ and changes.
 
 For more info I strongly recommend reading original lib's ``README.md`` file.
 
-[richtext_github]: https://github.com/ottypes/rich-text Rich Text on GitHub
+[richtext_github]: https://github.com/ottypes/rich-text "Rich Text on GitHub"
 
