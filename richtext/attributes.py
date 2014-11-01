@@ -1,7 +1,7 @@
 import iz
 
 
-def clone(attributes, keepNull=False):
+def clone(attributes=None, keepNull=False):
     if not iz.dictionary(attributes):
         return {}
     memo = {}
