@@ -1,5 +1,9 @@
 from setuptools import setup, find_packages
- 
+
+def read(filename):
+    with open(filename) as f:
+        return f.read()
+
 setup(name = "rich-text",
       version = "0.1",
       description = "A format for representing rich text documents and changes.",
