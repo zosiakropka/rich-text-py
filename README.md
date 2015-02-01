@@ -1,8 +1,8 @@
 # Rich Text for Python
 
-**Rich Text for Python** is a Python port of the [Rich Text][richtext_github]
-JavaScript library implementing format for representing rich text documents
-and changes.
+**Rich Text for Python** is a Python port of the [Rich Text][richtext_github].
+This excellent JavaScript library implements format for representing rich text
+documents and changes.
 
 For more info I strongly recommend reading original lib's ``README.md`` file.
 

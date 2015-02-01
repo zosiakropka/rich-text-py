@@ -12,8 +12,4 @@ setup(name = "rich-text",
       license = "MIT",
 
       packages=find_packages(),
-      install_requires=[
-                        "diff-match-patch",
-                        ],
-      )
-
+      install_requires=["diff-match-patch", ])
