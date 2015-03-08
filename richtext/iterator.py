@@ -16,11 +16,10 @@ class Iterator(object):
 
     def next(self, length=Infinity):
 
-        nextOp = None
         try:
             nextOp = self.ops[self.index]
         except:
-            pass
+            nextOp = None
         if nextOp:
             offset = self.offset
             opLength = op.length(nextOp)
@@ -38,7 +37,7 @@ class Iterator(object):
                     retOp['attributes'] = nextOp['attributes']
                 if iz.number(nextOp.get('retain')):
                     retOp['retain'] = length
-                elif iz.string(nextOp['insert']):
+                elif iz.string(nextOp.get('insert')):
                     retOp['insert'] = nextOp['insert'][offset:(offset + length)]
                 else:
                     # offset should === 0, length should === 1

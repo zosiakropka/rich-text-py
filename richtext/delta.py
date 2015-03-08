@@ -49,32 +49,32 @@ class Delta(object):
 
     def push(self, newOp):
         index = len(self.ops)
-        lastOp = self.ops[index - 1] if index else {}
+        lastOp = self.ops[index - 1] if index > 0 else None
         newOp = op.attributes.clone(newOp)
         if iz.dictionary(lastOp):
             if iz.number(newOp.get('delete')) and iz.number(lastOp.get('delete')):
-                self.ops[index - 1] = {'delete': lastOp.get('delete') + newOp.get('delete')}
+                self.ops[index - 1] = {'delete': lastOp['delete'] + newOp['delete']}
                 return self
-        # Since it does not matter if we insert before or after deleting at the same index,
-        #  always prefer to insert first
-        if iz.number(lastOp.get('delete')) and iz.string(newOp.get('insert')) or iz.number(newOp.get('insert')):
-            index -= 1
-            lastOp = self.ops[index - 1]
-            if not iz.dictionary(lastOp):
-                self.ops = [newOp] + self.ops
-                return self
+            # Since it does not matter if we insert before or after deleting at the same index,
+            #  always prefer to insert first
+            if iz.number(lastOp.get('delete')) and (iz.string(newOp.get('insert')) or iz.number(newOp.get('insert'))):
+                index -= 1
+                lastOp = self.ops[index - 1] if index > 0 else None
+                if not iz.dictionary(lastOp):
+                    self.ops = [newOp] + self.ops
+                    return self
 
-        if iz.equal(newOp.get('attributes'), lastOp.get('attributes')):
-            if iz.string(newOp.get('insert')) and iz.string(lastOp.get('insert')):
-                self.ops[index - 1] = {'insert': lastOp['insert'] + newOp['insert']}
-                if iz.dictionary(newOp.get('attributes')):
-                    self.ops[index - 1]['attributes'] = newOp['attributes']
-                return self
-            elif iz.number(newOp.get('retain')) and iz.number(lastOp.get('retain')):
-                self.ops[index - 1] = {'retain': lastOp.get('retain') + newOp.get('retain')}
-                if iz.dictionary(newOp.get('attributes')):
-                    self.ops[index - 1]['attributes'] = newOp.get('attributes')
-                return self
+            if iz.equal(newOp.get('attributes'), lastOp.get('attributes')):
+                if iz.string(newOp.get('insert')) and iz.string(lastOp.get('insert')):
+                    self.ops[index - 1] = {'insert': lastOp['insert'] + newOp['insert']}
+                    if iz.dictionary(newOp.get('attributes')):
+                        self.ops[index - 1]['attributes'] = newOp['attributes']
+                    return self
+                elif iz.number(newOp.get('retain')) and iz.number(lastOp.get('retain')):
+                    self.ops[index - 1] = {'retain': lastOp.get('retain') + newOp.get('retain')}
+                    if iz.dictionary(newOp.get('attributes')):
+                        self.ops[index - 1]['attributes'] = newOp.get('attributes')
+                    return self
         self.ops = self.ops[0:index] + [newOp] + self.ops[index:-1]
         return self
 
@@ -102,7 +102,7 @@ class Delta(object):
             if index < start:
                 nextOp = iterator.next(start - index)
             else:
-                nextOp = iterator.next(end - start)
+                nextOp = iterator.next(end - index)
                 delta.push(nextOp)
             index += op.length(nextOp)
         return delta

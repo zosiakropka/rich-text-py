@@ -15,5 +15,4 @@ def dictionary(obj=None):
 
 
 def string(obj=None):
-    return isinstance(obj, str) or isinstance(obj, unicode)
-
+    return isinstance(obj, basestring)
