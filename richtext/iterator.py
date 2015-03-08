@@ -38,7 +38,7 @@ class Iterator(object):
                     retOp['attributes'] = nextOp['attributes']
                 if iz.number(nextOp.get('retain')):
                     retOp['retain'] = length
-                elif iz.string(nextOp['insert']):
+                elif iz.string(nextOp.get('insert')):
                     retOp['insert'] = nextOp['insert'][offset:(offset + length)]
                 else:
                     # offset should === 0, length should === 1
