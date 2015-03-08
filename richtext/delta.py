@@ -102,7 +102,7 @@ class Delta(object):
             if index < start:
                 nextOp = iterator.next(start - index)
             else:
-                nextOp = iterator.next(end - start)
+                nextOp = iterator.next(end - index)
                 delta.push(nextOp)
             index += op.length(nextOp)
         return delta
