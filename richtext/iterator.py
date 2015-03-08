@@ -16,11 +16,10 @@ class Iterator(object):
 
     def next(self, length=Infinity):
 
-        nextOp = None
         try:
             nextOp = self.ops[self.index]
         except:
-            pass
+            nextOp = None
         if nextOp:
             offset = self.offset
             opLength = op.length(nextOp)
