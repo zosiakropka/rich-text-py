@@ -49,7 +49,7 @@ class Delta(object):
 
     def push(self, newOp):
         index = len(self.ops)
-        lastOp = self.ops[index - 1] if index else {}
+        lastOp = self.ops[index - 1] if index > 0 else None
         newOp = op.attributes.clone(newOp)
         if iz.dictionary(lastOp):
             if iz.number(newOp.get('delete')) and iz.number(lastOp.get('delete')):
